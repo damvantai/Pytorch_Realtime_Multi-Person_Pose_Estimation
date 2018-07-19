@@ -31,14 +31,15 @@ stickwidth = 4
 def construct_model(args):
 
     model = pose_estimation.PoseModel(num_point=19, num_vector=19)
-    state_dict = torch.load(args.model)['state_dict']
-    from collections import OrderedDict
-    new_state_dict = OrderedDict()
-    for k, v in state_dict.items():
-        name = k[7:]
-        new_state_dict[name] = v
-    state_dict = model.state_dict()
-    state_dict.update(new_state_dict)
+    # state_dict = torch.load(args.model)['state_dict']
+    state_dict = torch.load(args.model)
+    # from collections import OrderedDict
+    # new_state_dict = OrderedDict()
+    # for k, v in state_dict.items():
+    #     name = k[7:]
+    #     new_state_dict[name] = v
+    # state_dict = model.state_dict()
+    # state_dict.update(new_state_dict)
     model.load_state_dict(state_dict)
     model = model.cuda()
     model.eval()
@@ -97,7 +98,7 @@ def process(model, input_path):
         imgToTest_padded, pad = padRightDownCorner(imgToTest, stride, padValue)
 
         input_img = np.transpose(imgToTest_padded[:,:,:,np.newaxis], (3, 2, 0, 1)) # required shape (1, c, h, w)
-        mask = np.ones((1, 1, input_img.shape[2] / stride, input_img.shape[3] / stride), dtype=np.float32)
+        mask = np.ones((1, 1, int(input_img.shape[2] / stride), int(input_img.shape[3] / stride)), dtype=np.float32)
 
         input_var = torch.autograd.Variable(torch.from_numpy(input_img).cuda())
         mask_var = torch.autograd.Variable(torch.from_numpy(mask).cuda())
@@ -299,11 +300,11 @@ def process(model, input_path):
 
 if __name__ == '__main__':
 
-    os.environ['CUDA_VISIBLE_DEVICES'] = '3'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     parser = argparse.ArgumentParser()
     parser.add_argument('--image', type=str, required=True, help='input image')
     parser.add_argument('--output', type=str, default='result.png', help='output image')
-    parser.add_argument('--model', type=str, default='openpose_coco_best.pth.tar', help='path to the weights file')
+    parser.add_argument('--model', type=str, default='../caffe2pytorch/pose_model.pth', help='path to the weights file')
 
     args = parser.parse_args()
     input_image = args.image
