@@ -304,12 +304,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--image', type=str, required=True, help='input image')
     parser.add_argument('--output', type=str, default='result.png', help='output image')
-<<<<<<< HEAD
+
     # parser.add_argument('--model', type=str, default='openpose_coco_best.pth.tar', help='path to the weights file')
-    parser.add_argument('--model', type=str, default='/home/damvantai/Documents/github/pose_human/Pytorch_Realtime_Multi-Person_Pose_Estimation/caffe2pytorch/pose_model.pth', help='path to the weights file')
-=======
+
     parser.add_argument('--model', type=str, default='/home/neosai/Documents/model/pose_human/pytorch/pose_model.pth', help='path to the weights file')
->>>>>>> 268582289efdefc4b55120d3d511b48e4e244883
+
 
     args = parser.parse_args()
     input_image = args.image
