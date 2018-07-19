@@ -31,14 +31,15 @@ stickwidth = 4
 def construct_model(args):
 
     model = pose_estimation.PoseModel(num_point=19, num_vector=19)
-    state_dict = torch.load(args.model)['state_dict']
-    from collections import OrderedDict
-    new_state_dict = OrderedDict()
-    for k, v in state_dict.items():
-        name = k[7:]
-        new_state_dict[name] = v
-    state_dict = model.state_dict()
-    state_dict.update(new_state_dict)
+    # state_dict = torch.load(args.model)['state_dict']
+    state_dict = torch.load(args.model)
+    # from collections import OrderedDict
+    # new_state_dict = OrderedDict()
+    # for k, v in state_dict.items():
+    #     name = k[7:]
+    #     new_state_dict[name] = v
+    # state_dict = model.state_dict()
+    # state_dict.update(new_state_dict)
     model.load_state_dict(state_dict)
     model = model.cuda()
     model.eval()
@@ -303,7 +304,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--image', type=str, required=True, help='input image')
     parser.add_argument('--output', type=str, default='result.png', help='output image')
-    parser.add_argument('--model', type=str, default='openpose_coco_best.pth.tar', help='path to the weights file')
+    # parser.add_argument('--model', type=str, default='openpose_coco_best.pth.tar', help='path to the weights file')
+    parser.add_argument('--model', type=str, default='/home/damvantai/Documents/github/pose_human/Pytorch_Realtime_Multi-Person_Pose_Estimation/caffe2pytorch/pose_model.pth', help='path to the weights file')
 
     args = parser.parse_args()
     input_image = args.image
